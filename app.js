@@ -17,10 +17,10 @@ app.use("/api", schoolDataRoutes)
 app.use("/api", questionRoutes)
 app.use("/api", studentRoutes)
 app.use("/api", teacherRoutes)
-const port = process.env.port || 9000;
+// const port = process.env.port || 9000;
 try {
     
-    app.listen(port, () => {
+    app.listen(9000, () => {
         mongoose
             .connect("mongodb+srv://robinedu:robinedu@cluster0.r90dl.mongodb.net/edu?retryWrites=true&w=majority", {
                 useUnifiedTopology: true,
