@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS,PUT');
     next()
 })
-app.get('/', 'chalgya mja aa gya')
+app.get('/', (req, res) => res.send("chalgya mja aa gya"));
 app.use("/api", schoolDataRoutes)
 app.use("/api", questionRoutes)
 app.use("/api", studentRoutes)
