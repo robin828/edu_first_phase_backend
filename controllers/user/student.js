@@ -9,6 +9,18 @@ const resultModel = require('../../models/resultModel');
 const teacherModel = require('../../models/teacherModel');
 const teacherQuestionsModel = require('../../models/teacherQuestionsModel');
 const questionModel = require('../../models/questionModel');
+var nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    port: 465,
+    host: "smtp.gmail.com",
+    auth: {
+        user: 'schooledu72@gmail.com',
+        pass: 'Moni@1234',
+    },
+    secure: true, // upgrades later with STARTTLS -- change this based on the PORT
+});
+
 
 const register = async (req, res, next) => {
 	const errors = validationResult(req);
@@ -18,7 +30,7 @@ const register = async (req, res, next) => {
 	const { firstName, lastName, phoneNumber, standard, schoolName, rollNumber, gender, stream, subjects } = req.body;
 	let userName;
 	try {
-		userName = firstName + schoolConstants.schoolShortForm[schoolName] + rollNumber + '.edu';
+		userName = '1' + standard.split('-')[0]+standard.split('-')[1] + rollNumber + '.edu';
         console.log(userName);
 	} catch (err) {
 		console.log(err);
@@ -64,7 +76,23 @@ const register = async (req, res, next) => {
 		return res.status(400).send('Student already added')
 	}
 	try {
-		await student.save()
+		await student.save();
+		const mailData = {
+			from: 'schooledu72@gmail.com',
+			to: 'robin19093@gmail.com',
+			subject: "Your credentials for website",
+			text: `userName - ${userName}
+					password - ${password}
+					please do not share and misplace your your email and passord with anyone`,
+			// html: '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br/>',
+		};
+	
+		transporter.sendMail(mailData, (error, info) => {
+			if (error) {
+				return console.log(error);
+			}
+			res.status(200).send({ message: "Mail send", message_id: info.messageId });
+		});
 	} catch (error) {
 		console.log(error)
 		const err = new Error('could not sign up try again')
@@ -153,15 +181,12 @@ const getChapterWisePerformance = async (req, res, next) => {
 	try {
 		if(chapter) {
 			performance = await resultModel.find({$and:[{ exam }, {chapter}, {subject}]})
-			console.log('1')
 		}
 		else if(subject && !chapter ) {
 			performance = await resultModel.find({$and:[{ exam }, {subject}]})
-			console.log('2')
 		} 
 		else {
 			performance = await resultModel.find({$and:[{ exam }]})
-			console.log('3')
 		}
 	} catch (error) {
 		console.log(error)
@@ -174,8 +199,6 @@ const getChapterWisePerformance = async (req, res, next) => {
 	res.send({
 		correct, incorrect, unattempted
 	})
-
-	console.log(correct, incorrect, unattempted)
 }
 
 let binarySearch = function (arr, x, start, end) {

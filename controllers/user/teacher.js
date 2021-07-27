@@ -3,7 +3,9 @@ const bcrypt = require('bcryptjs')
 var generator = require('generate-password');
 const JWT = require('jsonwebtoken');
 const annnounceModel = require('../../models/annnounceModel');
+const resultModel = require('../../models/resultModel');
 const schoolModel = require('../../models/schoolModel');
+const studentModel = require('../../models/studentModel');
 const teacherModel = require('../../models/teacherModel');
 const teacherQuestionsModel = require('../../models/teacherQuestionsModel');
  
@@ -128,7 +130,7 @@ const getDashboard = async (req, res, next) => {
 	}
 	console.log(dashboardData, 'dashboardData')
 	res.json({
-		subjectTeacher: dashboardData.subjectTeacher, name: dashboardData.name, subject:dashboardData.subject
+		subjectTeacher: dashboardData.subjectTeacher, classTeacher: dashboardData.classTeacher, subject: dashboardData.subject, name: dashboardData.name, subject:dashboardData.subject
 	})
 }
 
@@ -152,8 +154,67 @@ const assignQuestions = async (req, res, next) => {
 	}
 }
 
+const getAllStudents = async (req, res, next) => {
+	const {userName, className} = req.query;
+	let teacher;
+	let allStudent;
+
+	try {
+		teacher = await teacherModel.findOne({userName});
+		allStudent = await studentModel.find({$and: [{standard: className}, {school: teacher.school}]}, {userName:1, _id:0});
+	} catch (error) {
+		console.log(error);
+	}
+	res.send({
+		allStudent
+	})
+}
+
+const getStudentSubject = async (req, res, next) => {
+	const {userName} = req.query;
+	let student;
+
+	try {
+		student = await studentModel.findOne({userName});
+	} catch (error) {
+		console.log(error);
+	}
+	res.send({
+		subjects: student.subjects
+	})
+}
+
+const getStudentResult = async (req, res, next) => {
+	const {userName, selectedSubjects, selectedChapter} = req.query;
+	let result;
+	let correct=0; let incorrect=0; let unattempted=0;
+
+
+	try {
+		if(selectedChapter) {
+			result = await resultModel.find({$and:[{userName},{ exam: 'X_Board' }, {chapter: selectedChapter}, {subject: selectedSubjects}]})
+		}
+		else {
+			result = await resultModel.find({$and:[{userName},{ exam: 'X_Board' }, {subject: selectedSubjects}]})
+		}
+	} catch (error) {
+		console.log(error);
+	}
+	result.forEach((per) => {
+		correct = correct + per.correct;
+		incorrect = incorrect + per.inCorrect;
+		unattempted = unattempted + per.unattempted;
+	})
+	res.send({
+		correct, incorrect, unattempted
+	})
+}
+
 exports.register = register;
 exports.login = login;
 exports.announcements = announcements;
 exports.getDashboard = getDashboard;
 exports.assignQuestions = assignQuestions;
+exports.getAllStudents = getAllStudents;
+exports.getStudentResult = getStudentResult;
+exports.getStudentSubject = getStudentSubject;
