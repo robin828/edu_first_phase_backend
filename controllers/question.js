@@ -80,24 +80,33 @@ const questionSetByTeacher = async (req, res, next) => {
     }
 }
 
+let randomize = (arr, n, length, questions) =>
+{
+    console.log(length)
+    for (var i = 0; i < n; i++) {
+        // console.log(Math.floor(Math.random()*10000));
+        questions[i] = arr[Math.floor(Math.random()*length)];
+    }
+}
+
 const getQuestionForStudent = async (req, res ,next) => {
     const { selectedSubject, className, selectedChapter, selectedExam, noOfQuestions } = req.body;
     console.log(selectedSubject, className, selectedChapter, selectedExam, noOfQuestions, typeof(noOfQuestions), '6351725361725367')
 
-    let questions;
+    let totalQuestions;
+    const questions = [];
     try {
         // let exams = await examModel.find({examName});
         // questionModel.find({_id: {$in: exams.questions}}).exec(callback);
-        questions = await questionModel.aggregate([
+        totalQuestions = await questionModel.aggregate([
             {$match: {exam: selectedExam}},
             {$match: {className}},
             {$match: {subject: selectedSubject}},
             {$match: {chapter: selectedChapter}},
-            { $limit: parseInt(noOfQuestions) }
         ])
-        const t = questions.questions
-        console.log(questions)
+        randomize(totalQuestions, noOfQuestions, totalQuestions.length, questions)
         // console.log(questions, '4567898765')
+        console.log(questions);
         res.json({
             questions
         })

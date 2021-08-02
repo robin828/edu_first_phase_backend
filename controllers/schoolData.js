@@ -133,19 +133,9 @@ const getChapter = async (req, res,next) => {
                 "Chemical Reactions and Equations",
                 "Acids Bases and Salts",
                 "Metals and Non-metals",
-                "Carbon and its Compounds",
-                "Periodic Classification of Elements",
                 "Life Process",
-                "Control and Coordination",
-                "How do Organisms Reproduce",
-                "Heredity and Evolution",
                 " Light – Reflection and Refraction",
                 "The Human Eye and the Colourful World",
-                "Electricity",
-                "Magnetic Effects of Electric Current",
-                "Sources of Energy",
-                "Our Environment",
-                "Sustainable Management of Natural Resources"
             ],
             subjectName: "Science",
             className: 'X'
@@ -171,7 +161,22 @@ const getChapter = async (req, res,next) => {
                 "Our Environment",
                 "Sustainable Management of Natural Resources"
             ],
-            subjectName: "Science",
+            subjectName: "Maths",
+            className: 'X'
+        })
+    }
+    if(subjectName==='Social Science')  {
+        res.send({
+            chaptersName: [
+                "The Rise of Nationalism in Europe",
+                "Resources and Development",
+                "Agriculture",
+                "Power Sharing",
+                "Federalism",
+                "Development",
+                "Sectors of the Indian Economy",
+            ],
+            subjectName: "Social Science",
             className: 'X'
         })
     }

@@ -4,9 +4,7 @@ const bcrypt = require('bcryptjs')
 var generator = require('generate-password');
 const JWT = require('jsonwebtoken');
 const schoolModel = require('../../models/schoolModel');
-const schoolConstants = require('../../utils/schoolConstants');
 const resultModel = require('../../models/resultModel');
-const teacherModel = require('../../models/teacherModel');
 const teacherQuestionsModel = require('../../models/teacherQuestionsModel');
 const questionModel = require('../../models/questionModel');
 var nodemailer = require('nodemailer');
@@ -18,7 +16,7 @@ const transporter = nodemailer.createTransport({
         user: 'schooledu72@gmail.com',
         pass: 'Moni@1234',
     },
-    secure: true, // upgrades later with STARTTLS -- change this based on the PORT
+    secure: true,
 });
 
 
@@ -27,11 +25,10 @@ const register = async (req, res, next) => {
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array()[0].msg });
 	}
-	const { firstName, lastName, phoneNumber, standard, schoolName, rollNumber, gender, stream, subjects } = req.body;
+	const { firstName, lastName, phoneNumber, standard, schoolName, rollNumber, gender, stream, subjects, email } = req.body;
 	let userName;
 	try {
 		userName = '1' + standard.split('-')[0]+standard.split('-')[1] + rollNumber + '.edu';
-        console.log(userName);
 	} catch (err) {
 		console.log(err);
 		res.status(400).send('Could not create student try again later')
@@ -48,13 +45,11 @@ const register = async (req, res, next) => {
 		console.log(err);
 		res.status(400).send('Could not create student try again later')
 	}
-	console.log(password);
 	try {
 		const salt = await bcrypt.genSalt(10)
 		hashedPassword = await bcrypt.hash(password, salt)
 	} catch (error) {
-		console.log("password is not hashed")
-		return res.status(400).send('Could not create user try again later')
+		return res.status(400).send('Could not create user try again later due to password')
 	}
     let school;
     try {
@@ -79,11 +74,11 @@ const register = async (req, res, next) => {
 		await student.save();
 		const mailData = {
 			from: 'schooledu72@gmail.com',
-			to: 'robin19093@gmail.com',
+			to: email,
 			subject: "Your credentials for website",
 			text: `userName - ${userName}
-					password - ${password}
-					please do not share and misplace your your email and passord with anyone`,
+				   password - ${password}
+				   please do not share and misplace your your email and passord with anyone`,
 			// html: '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br/>',
 		};
 	
@@ -173,20 +168,18 @@ const getResult = async (req, res, next) => {
 	})
 }
 const getChapterWisePerformance = async (req, res, next) => {
-	const {exam, subject, chapter} = req.query
-	console.log('hi')
-	console.log(exam , subject, chapter);
+	const {exam, subject, chapter, userName} = req.query
 	let performance;
 	let correct=0; let incorrect=0; let unattempted=0;
 	try {
 		if(chapter) {
-			performance = await resultModel.find({$and:[{ exam }, {chapter}, {subject}]})
+			performance = await resultModel.find({$and:[{userName: userName[0]}, { exam }, {chapter}, {subject}]})
 		}
 		else if(subject && !chapter ) {
-			performance = await resultModel.find({$and:[{ exam }, {subject}]})
+			performance = await resultModel.find({$and:[{userName: userName[0]}, { exam }, {subject}]})
 		} 
 		else {
-			performance = await resultModel.find({$and:[{ exam }]})
+			performance = await resultModel.find({$and:[{userName: userName[0]}, { exam }]})
 		}
 	} catch (error) {
 		console.log(error)
@@ -213,7 +206,6 @@ let binarySearch = function (arr, x, start, end) {
 
 const getAssignedQuestionByTeacher = async (req, res, next) => {
 	const {userName} = req.query;
-	console.log(userName)
 	let student;
 	let school;
 	let className;
@@ -222,13 +214,11 @@ const getAssignedQuestionByTeacher = async (req, res, next) => {
 	let teacherQuestions = [];
 	try {
 		student = await studentModel.findOne({userName})
-		console.log(student, "student")
 		school = student.school
 		className = student.standard
 		allTeachers = await teacherQuestionsModel.find({$and: [{school}, {className}, {Date: {$lt: Date()}}]});
 		for (const teacher of allTeachers){
 			let obj = {}
-			console.log("teacher")
 			questions = await questionModel.find({_id: {$in: teacher.questions}})
 			obj.questions = questions;
 			obj.chapter = teacher.chapter;
@@ -236,7 +226,6 @@ const getAssignedQuestionByTeacher = async (req, res, next) => {
 			obj.date = teacher.Date;
 			teacherQuestions.push(obj);
 		}
-		console.log(teacherQuestions, 'teacherQuestions')
 	} catch (error) {
 		console.log(error)
 	}
@@ -267,7 +256,6 @@ const getDashboard = async (req, res, next) => {
 	} catch (error) {
 		console.log(error);
 	}
-	console.log(student)
 }
 
 exports.register = register;
