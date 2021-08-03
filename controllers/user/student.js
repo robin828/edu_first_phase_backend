@@ -170,6 +170,7 @@ const getResult = async (req, res, next) => {
 }
 const getChapterWisePerformance = async (req, res, next) => {
 	const {exam, subject, chapter, userName} = req.query
+	console.log(exam, subject, chapter, userName, '%%%%%%%')
 	let performance;
 	let correct=0; let incorrect=0; let unattempted=0;
 	try {
