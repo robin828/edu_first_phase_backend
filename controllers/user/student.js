@@ -176,6 +176,7 @@ const getChapterWisePerformance = async (req, res, next) => {
 	try {
 		if(chapter) {
 			performance = await resultModel.find({$and:[{userName: userName[0]}, { exam }, {chapter}, {subject}]})
+			console.log(performance, "%%%%%%%");
 		}
 		else if(subject && !chapter ) {
 			performance = await resultModel.find({$and:[{userName: userName[0]}, { exam }, {subject}]})
