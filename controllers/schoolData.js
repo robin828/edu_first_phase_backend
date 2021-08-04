@@ -145,21 +145,14 @@ const getChapter = async (req, res,next) => {
         res.send({
             chaptersName: [
                 "Real Numbers",
-                "Acids Bases and Salts",
-                "Metals and Non-metals",
-                "Carbon and its Compounds",
+                "Polynominal",
+                "Pair Of Linear Equations In Two Variables",
+                "Cordinate Geometry",
                 "Periodic Classification of Elements",
-                "Life Process",
-                "Control and Coordination",
-                "How do Organisms Reproduce",
-                "Heredity and Evolution",
-                " Light – Reflection and Refraction",
-                "The Human Eye and the Colourful World",
-                "Electricity",
-                "Magnetic Effects of Electric Current",
-                "Sources of Energy",
-                "Our Environment",
-                "Sustainable Management of Natural Resources"
+                "Triangles",
+                "introdiction To Trignometry ",
+                "Areas Related To Circles",
+                "Probability"
             ],
             subjectName: "Maths",
             className: 'X'

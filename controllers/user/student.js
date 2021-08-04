@@ -85,8 +85,10 @@ const register = async (req, res, next) => {
 	
 		transporter.sendMail(mailData, (error, info) => {
 			if (error) {
+				console.log("^^&^&^&")
 				return console.log(error);
 			}
+			console.log("^^))))")
 			res.status(200).send({ message: "Mail send", message_id: info.messageId });
 		});
 	} catch (error) {
