@@ -1,7 +1,0 @@
-            API  (POST)                                          Reason                                                        Body
-
-http://localhost:9000/api/addquestion  =======>    For Adding new question in database.   ========>     questionText, correctAnswer, options, solution, subject, className
-http://localhost:9000/api/addsubject   =======>    For Adding new Subject in database.    ========>     subject, className
-http://localhost:9000/api/addclass     =======>    For Adding new Class in database.      ========>     className
-http://localhost:9000/api/addschool    =======>    For Adding new School in database.     ========>     schoolName
-http://localhost:9000/api/addquestion  =======>    For Adding new Question in database.   ========>     questionText, correctAnswer, options, solution, subject, className, examName
