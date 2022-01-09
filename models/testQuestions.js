@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 
-const questionModel = new mongoose.Schema({
+const testQuestions = new mongoose.Schema({
     questionText: {
         type: String,
     },
@@ -35,4 +35,4 @@ const questionModel = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('questionModel', questionModel);
+module.exports = mongoose.model('testQuestions', testQuestions);

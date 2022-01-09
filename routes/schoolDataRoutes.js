@@ -1,10 +1,11 @@
 const express = require('express');
 const route = express.Router();
-const {addClass, addExam, addSchool, updateExam, getExam, getSubjects, getChapter} = require('../controllers/schoolData');
+const {addClass, addExam, addSchool, updateExam, getExam, getSubjects, getChapter, checkSchool} = require('../controllers/schoolData');
 // route.post('/addsubject', addSubject);
 route.post('/addclass', addClass);
 route.post('/addexam', addExam);
 route.post('/addschool', addSchool);
+route.post('/checkschool', checkSchool);
 route.put('/updateexam', updateExam);
 route.get('/getexam', getExam);
 route.get('/getsubject', getSubjects);

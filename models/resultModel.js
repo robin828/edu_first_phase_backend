@@ -33,7 +33,15 @@ const resultModel = new mongoose.Schema({
         type: Object,
         required: true
     },
-    questions: [{
+    inCorrectQuestions: [{
+        type: mongoose.Types.ObjectId,
+        required: true
+    }],
+    leftQuestions: [{
+        type: mongoose.Types.ObjectId,
+        required: true
+    }],
+    correctQuestions: [{
         type: mongoose.Types.ObjectId,
         required: true
     }],
