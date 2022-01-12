@@ -139,6 +139,7 @@ const getSubjects = async (req, res, next) => {
 const getChapter = async (req, res,next) => {
     const {subjectName, examName} = req.query;
     console.log("45")
+    console.log(subjectName, examName)
     if(subjectName==='Science')  {
         res.send({
             chaptersName: [
@@ -245,6 +246,32 @@ const getChapter = async (req, res,next) => {
 
             ],
             subjectName: "Chemistry",
+            className: 'XI'
+        })
+    }
+    if(subjectName==='Maths'&&examName==='JEE Mains')  {
+        res.send({
+            chaptersName: [
+                "Sets, Relations and Functions",
+                "Complex Numbers",
+                "Quadratic Equations",
+                "Matrices and Determinants",
+                "Permutations And Combinations",
+                "Mathematical Induction",
+                "Binomial Theorem and its Simple Applications",
+                "Sequences and Series",
+                "Limit, Continuity and Differentiability",
+                "Integral Calculus",
+                "Differential Equations",
+                "Co-ordinate Geometry",
+                "Three Dimensional Geometry",
+                "Vector Algebra",
+                "Statistics and Probability",
+                "Trigonometry",
+                "Mathematical Reasoning"
+
+            ],
+            subjectName: "Maths",
             className: 'XI'
         })
     }
