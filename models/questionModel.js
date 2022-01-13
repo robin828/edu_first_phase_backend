@@ -17,6 +17,9 @@ const questionModel = new mongoose.Schema({
     chapter: {
         type: String,
     },
+    topic: {
+        type: String,
+    },
     solution: {
         type: String,
     },

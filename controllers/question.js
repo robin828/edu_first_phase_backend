@@ -8,11 +8,11 @@ const testQuestions = require('../models/testQuestions');
 
 
 const addQuestion = async (req, res, next) => {
-	const {questionText, correctAnswer, options, solution, subject, className, examName, chapter, type, questionImage} = req.body;
+	const {questionText, correctAnswer, options, solution, subject, className, examName, chapter, type, topic, questionImage} = req.body;
     let question;
     console.log(examName);
     question = new questionModel({
-        questionText, correctAnswer, options, solution, subject, className, chapter, exam: examName, type, questionImage
+        questionText, correctAnswer, options, solution, subject, className, chapter, exam: examName, type, questionImage, topic
     })
     let checkExam;
 	try {
