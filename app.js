@@ -22,7 +22,7 @@ const port = process.env.port || 9000;
 try {
     app.listen(port, () => {
         mongoose
-            .connect("mongodb+srv://robinedu:robinedu@cluster0.r90dl.mongodb.net/edu?retryWrites=true&w=majority", {
+            .connect("mongodb+srv://upscQB:upscQB@cluster0.5wupqoz.mongodb.net/", {
                 useUnifiedTopology: true,
                 useNewUrlParser: true,
             })

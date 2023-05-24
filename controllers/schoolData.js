@@ -85,6 +85,7 @@ const addSchool = async (req, res, next) => {
         school = await schoolModel.findOne({ownerEmailId});
         console.log(school)
         if(!school) {
+            
             school = new schoolModel({schoolName, address, ownerName, ownerNumber, ownerEmailId});
             await school.save();
             res.send("School added successfully");

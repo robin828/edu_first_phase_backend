@@ -143,6 +143,7 @@ const register = async (req, res, next) => {
   }
   res.json({
     student: student.userName,
+    password: student.password
   });
 };
 
